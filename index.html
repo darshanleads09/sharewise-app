@@ -3,37 +3,120 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sharewise App</title>
+  <meta name="description" content="Sharewise App - Free online expense splitter and bill tracker. Easily split bills, track shared expenses, and calculate who owes whom. Perfect for roommates, friends, and group trips.">
+  <meta name="keywords" content="expense splitter, bill splitter, split bills, expense tracker, shared expenses, roommate bills, group expenses, cost splitter, who owes whom">
+  <meta name="author" content="Sharewise">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+  
+  <!-- Open Graph Tags for Social Sharing -->
+  <meta property="og:title" content="Sharewise App - Free Expense Splitter & Bill Tracker">
+  <meta property="og:description" content="Split bills effortlessly with Sharewise. Track shared expenses with friends, roommates, and family. See who owes whom and settle up easily.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://sharewise-app.github.io/">
+  <meta property="og:site_name" content="Sharewise App">
+  
+  <!-- Twitter Card Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sharewise App - Free Expense Splitter">
+  <meta name="twitter:description" content="Easily split bills and track shared expenses with friends and roommates.">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://sharewise-app.github.io/">
+  
+  <!-- Additional SEO Meta Tags -->
+  <meta name="theme-color" content="#007bff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
+  <title>Sharewise App - Free Online Expense Splitter & Bill Tracker</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  <!-- Google Site Verification -->
+  <meta name="google-site-verification" content="google1b84e3765a3bbb6d" />
+  
+  <!-- Google Tag Manager (GTM) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX', {
+      'anonymize_ip': true,
+      'allow_google_signals': true,
+      'allow_ad_personalization_signals': true
+    });
+  </script>
+  
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXXXX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  
+  <!-- Schema.org Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Sharewise App",
+    "description": "Free online expense splitter and bill tracker for splitting costs with friends and roommates",
+    "url": "https://sharewise-app.github.io/",
+    "applicationCategory": "FinanceApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "creator": {
+      "@type": "Organization",
+      "name": "Sharewise"
+    },
+    "featureList": [
+      "Split bills with multiple people",
+      "Track shared expenses",
+      "Calculate who owes whom",
+      "Export and import expense data",
+      "Share expense data via link or file"
+    ]
+  }
+  </script>
 </head>
 <body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXXXX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  
   <div class="container mt-5">
-    <h1 class="text-center">Sharewise App</h1>
+    <h1 class="text-center mb-4">Sharewise App - Free Expense Splitter & Bill Tracker</h1>
+    <p class="text-center text-muted mb-4">Easily split bills, track shared expenses, and see who owes whom - perfect for roommates, friends, and group trips</p>
+    
     <div class="row">
       <div class="col-md-4">
-        <h3>Add User</h3>
+        <h2 class="h4">Add User</h2>
+        <p class="small text-muted">Add people to track expenses with</p>
         <form id="addUserForm">
           <div class="mb-3">
             <input type="text" id="userName" class="form-control" placeholder="Enter user name" required />
           </div>
           <button type="submit" class="btn btn-primary w-100">Add User</button>
         </form>
-        <h3 class="mt-4">Users</h3>
+        <h2 class="h4 mt-4">Users List</h2>
         <ul id="userList" class="list-group"></ul>
       </div>
 
       <div class="col-md-8">
-        <h3>Add Expense</h3>
+        <h2 class="h4">Add Expense</h2>
+        <p class="small text-muted">Record shared expenses and choose who to split them with</p>
         <form id="addExpenseForm">
           <div class="mb-3">
-            <input type="text" id="expenseDescription" class="form-control" placeholder="Expense description" required />
+            <label for="expenseDescription" class="form-label">Expense Description</label>
+            <input type="text" id="expenseDescription" class="form-control" placeholder="e.g., Dinner, groceries, rent" required />
           </div>
           <div class="mb-3">
-            <input type="number" id="expenseAmount" class="form-control" placeholder="Amount" required />
+            <label for="expenseAmount" class="form-label">Amount</label>
+            <input type="number" id="expenseAmount" class="form-control" placeholder="0.00" step="0.01" required />
           </div>
           <div class="mb-3">
+            <label for="expensePaidBy" class="form-label">Paid by</label>
             <select id="expensePaidBy" class="form-select" required>
               <option value="" disabled selected>Paid by</option>
             </select>
@@ -46,25 +129,33 @@
           </div>
           <button type="submit" class="btn btn-success w-100">Add Expense</button>
         </form>
-        <h3 class="mt-4">Expenses</h3>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Description</th>
-              <th>Amount</th>
-              <th>Paid By</th>
-              <th>Split Among</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="expenseList"></tbody>
-        </table>
-        <h3 class="mt-4">Balances</h3>
+        
+        <h2 class="h4 mt-4">Expenses</h2>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Paid By</th>
+                <th>Split Among</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="expenseList"></tbody>
+          </table>
+        </div>
+        
+        <h2 class="h4 mt-4">Current Balances</h2>
+        <p class="small text-muted">How much each person has paid or owes</p>
         <ul id="balances" class="list-group"></ul>
-        <h3 class="mt-4">Who Owes Whom</h3>
+        
+        <h2 class="h4 mt-4">Settlement Summary - Who Owes Whom</h2>
+        <p class="small text-muted">Optimized transactions to settle all debts</p>
         <ul id="userOwesList" class="list-group"></ul>
         
-        <h3 class="mt-4">Share & Import</h3>
+        <h2 class="h4 mt-4">Share & Import Expenses</h2>
+        <p class="small text-muted">Share your expense data with others or import shared data</p>
         <div class="btn-group-vertical w-100" role="group">
           <button id="shareButton" class="btn btn-primary mb-2">
             <i class="fas fa-share-alt"></i> Share via Link
@@ -87,8 +178,8 @@
     </div>
   </div>
 
-  <footer class="text-center mt-5">
-    <p class="text-muted">This app is independently developed and is not affiliated with or endorsed by any expense tracking company. All rights reserved by the respective owners.</p>
+  <footer class="text-center mt-5 py-4 border-top">
+    <p class="text-muted small">Sharewise App - Free expense splitter and bill tracker for roommates, friends, and group trips.<br>This app is independently developed and is not affiliated with or endorsed by any expense tracking company. All rights reserved by the respective owners.</p>
   </footer>
 
   <script>
