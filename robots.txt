@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: 
 
-Sitemap: https://sharewise-app.github.io/sitemap.xml
+Sitemap: https://darshanleads09.github.io/sharewise-app/sitemap.xml
