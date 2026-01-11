@@ -234,11 +234,32 @@
           return;
         }
         
-        navigator.clipboard.writeText(shareUrl).then(() => {
-          alert('✅ Share link copied to clipboard!\n\nPaste and send this link to anyone.\nThey can click it to view your calculations.');
-        }).catch(() => {
+        // iOS-compatible clipboard handling
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(shareUrl).then(() => {
+            alert('✅ Share link copied to clipboard!\n\nPaste and send this link to anyone.\nThey can click it to view your calculations.');
+          }).catch((err) => {
+            console.error('Clipboard error:', err);
+            // Fallback for iOS
+            const textArea = document.createElement('textarea');
+            textArea.value = shareUrl;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+              document.execCommand('copy');
+              alert('✅ Share link copied!\n\nPaste and send this link to anyone.');
+            } catch (e) {
+              prompt('Copy this link to share:', shareUrl);
+            }
+            document.body.removeChild(textArea);
+          });
+        } else {
+          // Fallback for older browsers
           prompt('Copy this link to share:', shareUrl);
-        });
+        }
       };
       
       // Copy share code
@@ -249,11 +270,32 @@
         }
         
         const encoded = encodeData();
-        navigator.clipboard.writeText(encoded).then(() => {
-          alert('✅ Share code copied to clipboard!\n\nSend this code to anyone.\nThey can use "Import Share Code" to load it.');
-        }).catch(() => {
+        
+        // iOS-compatible clipboard handling
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(encoded).then(() => {
+            alert('✅ Share code copied to clipboard!\n\nSend this code to anyone.\nThey can use "Import Share Code" to load it.');
+          }).catch((err) => {
+            console.error('Clipboard error:', err);
+            // Fallback for iOS
+            const textArea = document.createElement('textarea');
+            textArea.value = encoded;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+              document.execCommand('copy');
+              alert('✅ Share code copied!');
+            } catch (e) {
+              prompt('Copy this share code:', encoded);
+            }
+            document.body.removeChild(textArea);
+          });
+        } else {
           prompt('Copy this share code:', encoded);
-        });
+        }
       };
       
       // Import share code
@@ -331,25 +373,63 @@
       
       // Load shared data from URL hash
       const loadSharedData = () => {
-        const hash = window.location.hash.substring(1);
-        if (hash && hash.length > 10) {
-          const data = decodeData(hash);
-          if (data && data.users && data.expenses) {
-            if (confirm(`Load shared data?\n\n${data.users.length} users\n${data.expenses.length} expenses\n\nThis will replace your current data.`)) {
-              users.length = 0;
-              expenses.length = 0;
-              users.push(...data.users);
-              expenses.push(...data.expenses);
-              saveToLocalStorage();
-              updateUI();
-              // Clear hash after loading
-              history.replaceState(null, null, ' ');
-              alert('✅ Shared data loaded successfully!');
-            } else {
-              // Clear hash if user cancels
-              history.replaceState(null, null, ' ');
+        try {
+          // Get hash from both window.location.hash and window.location.href for iOS compatibility
+          let hash = window.location.hash.substring(1);
+          
+          // Fallback for iOS Chrome that might not read hash correctly
+          if (!hash) {
+            const href = window.location.href;
+            const hashIndex = href.indexOf('#');
+            if (hashIndex !== -1) {
+              hash = href.substring(hashIndex + 1);
             }
           }
+          
+          console.log('Hash detected:', hash ? 'Yes' : 'No', 'Length:', hash.length);
+          
+          if (hash && hash.length > 10) {
+            const data = decodeData(hash);
+            console.log('Decoded data:', data ? 'Success' : 'Failed');
+            
+            if (data && data.users && data.expenses) {
+              // For iOS, use setTimeout to avoid blocking
+              setTimeout(() => {
+                const shouldLoad = confirm(`Load shared data?\n\n${data.users.length} users\n${data.expenses.length} expenses\n\nThis will replace your current data.`);
+                
+                if (shouldLoad) {
+                  users.length = 0;
+                  expenses.length = 0;
+                  users.push(...data.users);
+                  expenses.push(...data.expenses);
+                  saveToLocalStorage();
+                  updateUI();
+                  
+                  // Clear hash after loading - iOS safe method
+                  try {
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                  } catch (e) {
+                    console.error('History API error:', e);
+                  }
+                  
+                  alert('✅ Shared data loaded successfully!');
+                } else {
+                  // Clear hash if user cancels
+                  try {
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                  } catch (e) {
+                    console.error('History API error:', e);
+                  }
+                }
+              }, 100);
+            } else {
+              console.error('Invalid data format');
+              alert('❌ Invalid share link. Please check the link and try again.');
+            }
+          }
+        } catch (error) {
+          console.error('Error loading shared data:', error);
+          alert('❌ Error loading shared data: ' + error.message);
         }
       };
 
