@@ -1,0 +1,10 @@
+title: Sharewise App
+description: Free online expense splitter and bill tracker
+url: https://sharewise-app.github.io
+author: Sharewise
+email: contact@sharewise.app
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
+markdown: kramdown
+theme: jekyll-theme-cayman
